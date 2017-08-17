@@ -29,42 +29,6 @@ type request struct {
 	ID     GameID
 }
 
-func (g *GameGuiService) InfinityPage(gm *Game) []*Game {
-	for {
-		return []*Game{gm}
-	}
-}
-
-func (g *GameGuiService) Render(letter string, gmID GameID) (string, error) {
-	//Validate arguments.
-	if gmID == 0 {
-		return "", data.ErrGameRequired
-	}
-	req := Request{
-		Letter: letter,
-		ID:     gmID,
-	}
-
-	b := new(bytes.Buffer)
-	json.NewEncoder(b).Encode(&req)
-	resp, err := http.Post("http://localhost:8006/games/render", "application/json; charset=utf-8", b)
-	if err != nil {
-		return "", err
-	}
-	defer resp.Body.Close()
-
-	// Decode response into JSON.
-	var respBody string
-	if err := json.NewDecoder(resp.Body).Decode(&respBody); err != nil {
-		return "", err
-	}
-
-	// Copy returned dial.
-
-	return respBody, nil
-
-}
-
 func (g *GameGuiService) GuessALetter(letter string, gmID GameID) (*Game, error) {
 	//Validate arguments.
 	if gmID == 0 {
@@ -94,30 +58,6 @@ func (g *GameGuiService) GuessALetter(letter string, gmID GameID) (*Game, error)
 	return &respBody, nil
 
 }
-
-// 	reqBody, err := json.Marshal(gm)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	// Execute request.
-// 	resp, err := http.Post("http://localhost:8006/games/guessletter", "application/json", bytes.NewReader(reqBody))
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	defer resp.Body.Close()
-
-// 	// Decode response into JSON.
-// 	var respBody *Game
-// 	if err := json.NewDecoder(resp.Body).Decode(respBody); err != nil {
-// 		return nil, err
-// 	}
-
-// 	// Copy returned dial.
-// 	gm = respBody
-
-// 	return gm, nil
-// }
 
 func (g *GameGuiService) MustName(Name string) string {
 	if Name == "" {

@@ -4,8 +4,7 @@
     </div>
     <div class="span-24">
         <h2>Guess a letter</h2>
-        
-        {{$Result := .UserGui.GuessALetter .Letter .Game_id}} 
+        {{$Result := .UserGui.GuessALetter .Letter .Game_id}}
             {{if eq "true" $Result.Invalid}}
                 {{if eq  "false" $Result.JustStarted}}
                     <br>
@@ -40,13 +39,16 @@
                             <br> <br>
                 {{end}}
             {{end}}
-           {{$Result2 := .UserGui.Render .Letter .Game_id}}
-            {{$Result2}}
-
             {{if eq 7 $Result.Count}}{{else}}
-              <form class="game" action="{{.UserGui.Render .Letter .Game_id}}">
-                <input  type="text" size="1" maxlength="1" name="guessedletterr" autocomplete="off" value="{{$Result.GuessedLetterR}}">
-                <a href="{{.UserGui.Render .Letter .Game_id}}"><input  type="submit" value="Guess!"></a>
+              <form class="game" action="/games/guess" method="post">
+                <input type="text" size="1" maxlength="1" name="guessedletterr" autocomplete="off" value="{{$Result.GuessedLetterR}}">
+                <input type="submit" value="Guess!">
+                <input type="hidden" name="playerid" value="{{$Result.PlayerID}}">
+                <input type="hidden" name="id" value="{{$Result.ID}}">
+                <input type="hidden" name="wordsofarr" value="{{$Result.WordSoFarR}}">
+                <input type="hidden" name="wrongguessesr" value="{{$Result.WrongGuessesR}}">
+                <input type="hidden" name="invalid" value="{{$Result.Invalid}}">
+                <input type="hidden" name="juststarted" value="{{$Result.JustStarted}}">
               </form>
             {{end}}
             <form class="game" method="get" action="/games/start">
@@ -62,8 +64,7 @@
                     <input type="hidden" name="invalid" value="{{$Result.Invalid}}">
                     <br><br>
                   <button type="submit" class="btn btn-success">Save</button>
-              </form>  
-            {{end}}
-
+              </form>
+            {{end}}   
     </div> 
 </div> 

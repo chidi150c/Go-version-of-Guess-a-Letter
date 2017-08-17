@@ -38,7 +38,6 @@ func NewGameHandler(s *Session) *GameHandler {
 	h.mux.Post("/games/guessletter", s.Validate(h.GuessLetterHandler))
 	h.mux.Post("/games/guess", s.Validate(h.GuessHandler))
 	h.mux.Get("/games/save/:id", s.Validate(h.SaveHandler))
-	h.mux.Post("/games/render", s.Validate(h.RenderHandler))
 	//h.mux.Get("/games/page", s.Validate(h.PageHandler))
 	//h.mux.Post("/games/test", s.Validate(h.test))
 	// h.mux.Post("/games", s.Validate(h.createHandler))
@@ -48,30 +47,6 @@ func NewGameHandler(s *Session) *GameHandler {
 	// h.mux.Get("/games/edit/:id", s.Validate(h.editFormHandler))
 
 	return h
-}
-
-func (h *GameHandler) RenderHandler(w http.ResponseWriter, r *http.Request) {
-	// Decode request.
-	var req Request
-	if r.Body == nil {
-		http.Error(w, "Please send a request body", 400)
-		return
-	}
-
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		tools.Error(w, data.ErrInvalidJSON, http.StatusBadRequest, h.Logger)
-		return
-	}
-	fmt.Printf("\n\n\n********************* In guessLetterH game *************************  %vn\n\n\n", req)
-
-	str, err := h.Session.Gameservice.ServeRender(req.Letter, req.ID)
-	if err != nil {
-		tools.Error(w, errors.Wrapf(err, "could not ServerGuessALetter game: %v", err), http.StatusInternalServerError, h.Logger)
-		return
-	}
-	if err := json.NewEncoder(w).Encode(&str); err != nil {
-		tools.Error(w, err, http.StatusInternalServerError, h.Logger)
-	}
 }
 
 func (h *GameHandler) listGamesHandler(w http.ResponseWriter, r *http.Request) {
@@ -184,28 +159,6 @@ func (h *GameHandler) GuessLetterHandler(w http.ResponseWriter, r *http.Request)
 		tools.Error(w, err, http.StatusInternalServerError, h.Logger)
 	}
 }
-
-// func (h *GameHandler) PageHandler(w http.ResponseWriter, r *http.Request) {
-// 	// Decode request.
-// 	var req Game
-// 	if r.Body == nil {
-// 		h.StartHandler(w, r)
-// 		return
-// 	}
-// 	fmt.Printf("\n\n\n********************* In guessLetterH game *************************  %vn\n\n\n", req)
-// 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-// 		tools.Error(w, data.ErrInvalidJSON, http.StatusBadRequest, h.Logger)
-// 		return
-// 	}
-// 	err := h.Session.Pageservice.GamePrint(&req)
-// 	if err != nil {
-// 		tools.Error(w, errors.Wrapf(err, "could not Pageservice.GamePrint game: %v", err), http.StatusInternalServerError, h.Logger)
-// 		return
-// 	}
-// 	// if err := json.NewEncoder(w).Encode(&gm); err != nil {
-// 	// 	tools.Error(w, err, http.StatusInternalServerError, h.Logger)
-// 	// }
-// }
 
 func (h *GameHandler) SaveHandler(w http.ResponseWriter, r *http.Request) {
 	user, err := h.Session.UserFromRequest(r)

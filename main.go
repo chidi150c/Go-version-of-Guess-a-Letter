@@ -9,7 +9,6 @@ import (
 	"syscall"
 	"user-apiv2/apiapp"
 	"user-apiv2/apigame"
-	"user-apiv2/apimovie"
 	"user-apiv2/apiuser"
 	"user-apiv2/data"
 )
@@ -23,23 +22,19 @@ func main() {
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
 	//[Start User Session]
 	//Implemented User in apiuser and currently the only option
-	var dbMovie = make(data.MDBType)
 	var dbUser = make(data.DBType)
 	var dbGame = make(apigame.GDBType)
 
 	gmg := apigame.NewGameGuiService()
-	//gmp := apipage.NewPageGuiService()
 
 	us := apiuser.NewSession(dbUser)
-	ms := apimovie.NewSession(dbMovie, us)
 	gs := apigame.NewSession(dbGame, us, gmg)
 
-	mh := apimovie.NewMovieHandler(ms)
 	gh := apigame.NewGameHandler(gs)
 	uh := apiuser.NewUserHandler(us)
 	_ = uh.Session.Userservice.AddUser(&data.User{Username: "chidi", Password: "cc", Level: "Admin"})
 	//initial the handler
-	h := apiapp.NewHandler(uh, mh, gh)
+	h := apiapp.NewHandler(uh, gh)
 	//open apiuser server
 	server := apiapp.NewServer(addr, h)
 	//defer apiuser server close

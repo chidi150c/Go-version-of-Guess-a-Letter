@@ -16,26 +16,17 @@ type Session struct {
 	db             interface{}
 	Gameservice    GameService
 	GameGuiService *GameGuiService
-	//Pageservice    apipage.PageService
-	//PageGuiService *apipage.PageGuiService
-	now time.Time
+	now            time.Time
 	*apiuser.Session
 }
 
 func NewSession(uDB GDBType, us *apiuser.Session, gg *GameGuiService) *Session {
 
 	s := &Session{
-		db:      uDB,
-		Session: us,
-		//PageGuiService: gs,
+		db:             uDB,
+		Session:        us,
 		GameGuiService: gg,
 	}
 	s.Gameservice.session = s
-	//s.Pageservice.Session = s
 	return s
 }
-
-// // GameService returns a game service associated with this session.
-// func (s *Session) GameService() GameService {
-// 	return &s.Gameservice
-// }

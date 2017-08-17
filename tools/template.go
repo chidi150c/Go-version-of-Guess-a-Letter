@@ -12,17 +12,12 @@ import (
 
 var (
 	// See template.go
-	SignupTmpl     = parseTemplate("signup.html")
-	IndexTmpl      = parseTemplate("index.html")
-	LoginTmpl      = parseTemplate("login.html")
-	ListusersTmpl  = parseTemplate("listusers.html")
-	ListmoviesTmpl = parseTemplate("listmovies.html")
-	ListgamesTmpl  = parseTemplate("listgames.html")
-	EditTmpl       = parseTemplate("edit.html")
-	EditGamesTmpl  = parseTemplate("editgames.html")
-	DetailTmpl     = parseTemplate("detail.html")
-	GameTmpl       = parseTemplate("game.html")
-	GamePageTmpl   = parseTemplate("gamepage.html")
+	SignupTmpl    = parseTemplate("signup.html")
+	IndexTmpl     = parseTemplate("index.html")
+	LoginTmpl     = parseTemplate("login.html")
+	ListusersTmpl = parseTemplate("listusers.html")
+	ListgamesTmpl = parseTemplate("listgames.html")
+	GameTmpl      = parseTemplate("game.html")
 )
 
 // parseTemplate applies a given file to the body of the base template.

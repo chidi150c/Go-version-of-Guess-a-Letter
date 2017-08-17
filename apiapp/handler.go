@@ -5,23 +5,20 @@ import (
 	"net/http"
 	"strings"
 	"user-apiv2/apigame"
-	"user-apiv2/apimovie"
 	"user-apiv2/apiuser"
 )
 
 // Handler is a collection of all the service handlers.
 type Handler struct {
-	UserHandler  *apiuser.UserHandler
-	MovieHandler *apimovie.MovieHandler
-	GameHandler  *apigame.GameHandler
+	UserHandler *apiuser.UserHandler
+	GameHandler *apigame.GameHandler
 }
 
 //initializies the Handler struct
-func NewHandler(u *apiuser.UserHandler, m *apimovie.MovieHandler, g *apigame.GameHandler) *Handler {
+func NewHandler(u *apiuser.UserHandler, g *apigame.GameHandler) *Handler {
 	return &Handler{
-		UserHandler:  u,
-		MovieHandler: m,
-		GameHandler:  g,
+		UserHandler: u,
+		GameHandler: g,
 	}
 }
 
@@ -31,9 +28,6 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if strings.HasPrefix(r.URL.Path, "/tools/asset/") {
 		fmt.Println()
 		http.StripPrefix("/tools/asset/", http.FileServer(http.Dir("./tools/asset/"))).ServeHTTP(w, r)
-	} else if strings.HasPrefix(r.URL.Path, "/movie") {
-		fmt.Println()
-		h.MovieHandler.ServeHTTP(w, r)
 	} else if strings.HasPrefix(r.URL.Path, "/game") {
 		fmt.Printf("\n\n\n ************************ In handler for game ***********************  \n\n\n\n")
 		fmt.Println()
