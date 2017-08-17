@@ -1,0 +1,36 @@
+
+<section class="container">
+   <div class="row">
+     <div class="col-sm-2">
+     </div>
+     <div class="col-sm-6" id="detail">
+       <h4 id="shoptitle">{{.Mov.MustName}}</h4>
+          <div class="media">
+            <div class="media-left">
+              <img style="width: 100%; height: 100%;" src="{{if .Mov.ImageURL}}{{.Mov.ImageURL}}{{else}}https://maps.googleapis.com/maps/api/streetview?size=400x400&location=40.720032,-73.988354&fov=90&heading=235&pitch=10&key=%20AIzaSyAV3qAYIEuBGzPlmmi92dUmrp8g4noIm2s{{end}}">
+            </div>
+          </div>
+     </div>
+     <div class="col-sm-4">
+         <div class="media-body">
+              <h5>Shop Owner: {{if .Mov.Author}}{{.Mov.Author}}{{else}}unknown{{end}}</h5>
+              <p>{{.Mov.Description}}</p>
+              <small>Added by {{.Mov.OwnerNameDisplayName}}</small>
+         </div>
+          {{if .IsUser }}
+          <div class="btn-group">
+            <form action="/shops/{{.Mov.ID}}:delete" method="post">
+              <a href="/shops/{{.Mov.ID}}/edit" class="btn btn-primary btn-sm">
+                <i class="glyphicon glyphicon-edit"></i>
+                <span>Edit shop</span>
+              </a>
+              <button class="btn btn-danger btn-sm">
+                <i class="glyphicon glyphicon-trash"></i>
+                <span>Delete shop</span>
+              </button>
+            </form>
+          </div>
+          {{end}}
+     </div>
+  </div>
+</section>

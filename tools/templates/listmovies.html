@@ -1,0 +1,36 @@
+
+<section class="container">
+  <div class="row">
+{{range .Movs}}
+      <figure class="col-sm-3 list">
+         <h4 id="topmov">
+         <a href="/movies/{{.ID}}"><img src="{{if .ImageURL}}{{ .ImageURL}}{{else}}/tools/asset/images/jewelry_market_by_mischiru.jpg{{end}}"></a>    
+        </h4>
+         <div id="bottommov">
+          <a href="/movies/{{.ID}}">{{.MustName}}</a>
+          <p >{{.Category}}</p>
+        </div>
+      </figure>
+{{else}}
+  </div>
+</section>
+<p>No Movies found.</p>
+{{end}}
+
+<!--p id="log"-->
+{{$lenth := len .Movs}}{{if not (.Movs.Count $lenth)}}
+  <div class="col-sm-3 list" style="padding: 10px">  
+      <a href={{.AddMovieURL}} class="btn btn-success btn-sm" >
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Add movie</span>
+      </a>
+ </div>
+ {{else}}
+      <a href={{.AddMovieURL}} class="btn btn-success btn-sm" >
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Add movie</span>
+      </a>
+ {{end}}
+
+<div class="clearfix"></div>
+

@@ -1,0 +1,63 @@
+<div class="container" id="game">
+    <div id="header" class="span-24">
+      <p>Play Guess A Letter Game</p>
+    </div>
+    <div class="span-24">
+            <h2>Guess a letter</h2>
+          
+
+{{$Result := .UserGui.GuessALetter .Game}}
+{{if eq "true" $Result.Invalid}}
+{{if not .Game.JustStarted}}
+      <br>
+      <p class="error">Invalid Input, use only Letters</p>
+      <br>
+      Wrong Guesses:
+      <br>       <br>
+      <p>Word So Far:   </p>
+      <br>      
+      {{else}}
+      Wrong Guesses:
+      <br>      <br>
+      <p>Word So Far:   </p>
+      <br>      
+{{end}}
+{{else}}
+      <br>
+      Wrong Guesses:
+      {{if $Result.WrongGuesses}}
+          <span class="guesses">{{printf "%s" $Result.WrongGuesses}}</span >
+      {{end}}
+       <br>      <br>
+      Word So Far
+      {{range $Result.WordSoFar}}
+          <span class="word">{{if eq . 45}}{{printf "-" }}{{else}}{{printf "%q" .}}{{end}}</span >
+      {{end}}
+      <br>
+{{end}}
+    
+<form class="game" action="{{.RenderPage $Result}}" >
+  <input type="text" size="1" name="guessedletter" autocomplete="off" value="{{$Result.GuessedLetter}}">
+  <input type="submit" value="Guess!">
+</form>
+
+<form class="game" method="get" action="/games/start">
+  <input type="submit" name="start" value="Start Game">
+</form>
+<!-- {{if not .Game.JustStarted}} -->
+<form class="game" method="post" action="/games/save">
+  <input type="hidden" name="guessedletter" value="{{$Result.GuessedLetter}}">
+  <input type="hidden" name="playerid" value="{{$Result.PlayerID}}">
+  <input type="hidden" name="playername" value="{{$Result.PlayerName}}">
+  <input type="hidden" name="wordsofar" value="{{$Result.WordSoFar}}">
+  <input type="hidden" name="wrongguesses" value="{{$Result.WrongGuesses}}">
+  <input type="hidden" name="correctword" value="{{$Result.CorrectWord}}">
+  <input type="hidden" name="invalid" value="{{$Result.Invalid}}">
+  <br><br>
+<button type="submit" class="btn btn-success">Save</button>
+</form>
+<!-- {{end}}   -->
+
+    </div>
+   
+</div>

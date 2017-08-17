@@ -1,0 +1,69 @@
+<div class="container" id="game">
+    <div id="header" class="span-24">
+      <p>Play Guess A Letter Game</p>
+    </div>
+    <div class="span-24">
+        <h2>Guess a letter</h2>
+        
+        {{$Result := .UserGui.GuessALetter .Letter .Game_id}} 
+            {{if eq "true" $Result.Invalid}}
+                {{if eq  "false" $Result.JustStarted}}
+                    <br>
+                    <p class="error">Invalid Input, use only Letters</p>
+                    <br>
+                    Wrong Guesses:
+                    <br>       <br>
+                    <p>Word So Far:   </p>
+                    <br>      
+                  {{else}}
+                    <br>
+                    Wrong Guesses:
+                    <br>      <br>
+                    <p>Word So Far:   </p>
+                    <br>     <br> 
+                {{end}}
+              {{else}}
+                {{if eq 7 $Result.Count}}
+                    <div class="span-24">
+                    <h1>{{if $Result.Winorloss}}You Win!{{else}}You Loss!{{end}}</h1>
+                    <p>The word was<span class="win">{{$Result.Word}}</span></p>
+                    </div>
+                   {{else}}
+                    <br>
+                    Wrong Guesses:
+                    {{if $Result.WrongGuessesR}}
+                            <span class="guesses">{{printf "%s" $Result.WrongGuessesR}}</span >
+                            <br>      <br>
+                    {{end}}
+                            Word So Far
+                            <span class="word">{{printf "%s" $Result.WordSoFarR}}</span > 
+                            <br> <br>
+                {{end}}
+            {{end}}
+           {{$Result2 := .UserGui.Render .Letter .Game_id}}
+            {{$Result2}}
+
+            {{if eq 7 $Result.Count}}{{else}}
+              <form class="game" action="{{.UserGui.Render .Letter .Game_id}}">
+                <input  type="text" size="1" maxlength="1" name="guessedletterr" autocomplete="off" value="{{$Result.GuessedLetterR}}">
+                <a href="{{.UserGui.Render .Letter .Game_id}}"><input  type="submit" value="Guess!"></a>
+              </form>
+            {{end}}
+            <form class="game" method="get" action="/games/start">
+                <input type="submit" name="start" value="Start Game">
+            </form>
+            {{if not $Result.JustStarted}} 
+              <form class="game" method="post" action="/games/save">
+                    <input type="hidden" name="guessedletter" value="{{$Result.GuessedLetter}}">
+                    <input type="hidden" name="playerid" value="{{$Result.PlayerID}}">
+                    <input type="hidden" name="playername" value="{{$Result.PlayerName}}">
+                    <input type="hidden" name="wordsofarr" value="{{$Result.WordSoFarR}}">
+                    <input type="hidden" name="wrongguessesr" value="{{$Result.WrongGuessesR}}">
+                    <input type="hidden" name="invalid" value="{{$Result.Invalid}}">
+                    <br><br>
+                  <button type="submit" class="btn btn-success">Save</button>
+              </form>  
+            {{end}}
+
+    </div> 
+</div> 
