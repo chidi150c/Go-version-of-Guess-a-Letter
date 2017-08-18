@@ -24,7 +24,7 @@ type Server struct {
 func NewServer(addre string, h *Handler) *Server {
 	return &Server{
 		Handler: h,
-		Addr:    addre,
+		Addr:    ":" + addre,
 	}
 }
 

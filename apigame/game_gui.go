@@ -13,10 +13,14 @@ import (
 type GameGuiService struct {
 	URL *url.URL
 	//gameService GameService
+	Port string
 }
 
-func NewGameGuiService() *GameGuiService {
-	a := &GameGuiService{URL: &url.URL{}}
+func NewGameGuiService(Pt string) *GameGuiService {
+	a := &GameGuiService{
+		URL:  &url.URL{},
+		Port: Pt,
+	}
 	return a
 }
 
@@ -40,8 +44,9 @@ func (g *GameGuiService) GuessALetter(letter string, gmID GameID) (*Game, error)
 	}
 
 	b := new(bytes.Buffer)
+	urlstr := fmt.Sprintf("%s", "http://localhost:"+g.Port+"/games/guessletter")
 	json.NewEncoder(b).Encode(&req)
-	resp, err := http.Post("http://localhost:8006/games/guessletter", "application/json; charset=utf-8", b)
+	resp, err := http.Post(urlstr, "application/json; charset=utf-8", b)
 	if err != nil {
 		return nil, err
 	}

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -14,9 +13,8 @@ import (
 )
 
 func main() {
-	var addr string
-	flag.StringVar(&addr, "addr", ":8006", "used to chose listening address port")
-	flag.Parse()
+
+	addr := os.Getenv("PORT")
 	sigs := make(chan os.Signal, 1)
 	done := make(chan bool, 1)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
@@ -25,7 +23,7 @@ func main() {
 	var dbUser = make(data.DBType)
 	var dbGame = make(apigame.GDBType)
 
-	gmg := apigame.NewGameGuiService()
+	gmg := apigame.NewGameGuiService(addr)
 
 	us := apiuser.NewSession(dbUser)
 	gs := apigame.NewSession(dbGame, us, gmg)
